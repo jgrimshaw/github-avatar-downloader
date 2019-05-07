@@ -1,6 +1,5 @@
 
 
-
 var owner = process.argv [2];
 var repo = process.argv [3];
 
@@ -23,7 +22,6 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
-
 function downloadImageByURL(url, filePath){
  request.get(url)
   .on("error", function (err) {
@@ -32,17 +30,19 @@ function downloadImageByURL(url, filePath){
   .pipe(fs.createWriteStream(filePath));
 }
 
-
 getRepoContributors(owner, repo, function(err, result) {
- console.log("Errors:", err);
-
- var parseResults = JSON.parse(result);
+  if (!owner || !repo){
+    console.log('Please enter valid arguments')
+    // console.log("Errors:", err);
+  } else {
+var parseResults = JSON.parse(result);
 
 parseResults.forEach(function(elm){
-  var login = elm.login
-  var avatar_url = elm.avatar_url
+  var login = elm.login;
+  var avatar_url = elm.avatar_url;
 
   downloadImageByURL(avatar_url, `avatars/${login}.jpg`);
-})
+  })
+  }
 });
 
