@@ -7,7 +7,7 @@ var fs = require("fs");
 
 function getRepoContributors(repoOwner, repoName, cb) {
   var options = {
-    url: 'https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
+    url: `https://api.github.com/repos/${repoOwner}/${repoName}/contributors`,
     headers: {
       'User-Agent': 'request',
       'Authorization': token.GITHUB_TOKEN
@@ -27,10 +27,13 @@ function downloadImageByURL(url, filePath){
     .pipe(fs.createWriteStream(filePath));
 }
 
+
 getRepoContributors("jquery", "jquery", function(err, result) {
   var parseResult = JSON.parse(result);
   parseResult.forEach(function(elm){
     console.log(elm.login, elm.avatar_url)
+
+    downloadImageByURL(elm.avatar_url, `avatars/${elm.login}.jpg`)
   })
 });
 
