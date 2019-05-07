@@ -19,17 +19,23 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 
+function downloadImageByURL(url, filePath){
+  request.get(url)
+    .on('error', function(err){
+        throw err;
+        })
+    .pipe(fs.createWriteStream(filePath));
+}
+
 getRepoContributors("jquery", "jquery", function(err, result) {
-
   var parseResult = JSON.parse(result);
-
   parseResult.forEach(function(elm){
-    console.log(elm.avatar_url)
+    console.log(elm.login, elm.avatar_url)
   })
-  // console.log("Errors:", err);
-  // console.log("Result:", parseResult);
-
 });
+
+
+
 
 // getRepoContributors("jquery", "jquery", function(err, result) {
 //   console.log("Errors:", err);
